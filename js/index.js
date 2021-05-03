@@ -40,3 +40,77 @@ const siteContent = {
 // Example: Update the img src for the logo
 let logo = document.getElementById("logo-img");
 logo.setAttribute('src', siteContent["nav"]["img-src"])
+
+let snippet = document.getElementById("cta-img");
+snippet.setAttribute('src', siteContent["cta"]["img-src"])
+
+let menu = document.getElementsByTagName("nav");
+console.log(menu.childNodes);
+for(let i = 0; i < 6; i++) {
+  console.log(siteContent["nav"][`nav-item-${i+1}`])
+  //menu.children[i].innerHTML = siteContent["nav"][`nav-item-${i+1}`];
+}
+
+let cta = document.getElementsByClassName("cta")
+let title = cta[0].childNodes[1]
+                  .firstChild
+                  .nextSibling
+                  .innerHTML = `DOM<br/>IS<br/>FUN`;
+                  console.log(title);
+let titleButton = cta[0].childNodes[1]
+                        .firstChild
+                        .nextSibling
+                        .nextSibling
+                        .nextSibling
+                        .innerHTML = "Get Started";
+console.log(titleButton);
+
+let topContent = document.getElementsByClassName("top-content")[0].childNodes;
+console.log(topContent);
+
+let bottomContent = document.getElementsByClassName("bottom-content")[0].childNodes;
+console.log(bottomContent);
+
+const getContent = content => {
+  console.log(content);
+  let contentSlice = [...content];
+  return contentSlice.filter(node => node.className === "text-content");
+}
+
+let resultTop    = getContent(topContent);
+let resultBottom = getContent(bottomContent);
+
+
+console.log(resultTop);
+
+const contentKeys = Object.keys(siteContent["main-content"]);
+console.log(contentKeys);
+
+const contentKeyHelper = sectionTitle => {
+  const section = Object.keys(siteContent[sectionTitle]);
+  const sectionKeys = section.forEach(node => Object(node).split('-'))
+  console.log(section);
+  let ledger = [];
+  const result = section.forEach(key => {
+    ledger.push(key.split('-'));
+  })
+
+
+  return ledger;
+}
+
+const keyJoiner = val => val.join('-');
+
+let mainContentKeys = contentKeyHelper("main-content");
+console.log(mainContentKeys);
+
+const contentOrganizer = (content, section) => {
+  const keys = contentKeyHelper(section);
+  let textContent = document.getElementsByClassName("text-content");
+  console.log(textContent);
+
+  
+
+
+}
+

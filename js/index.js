@@ -76,6 +76,7 @@ const contentKeyHelper = sectionTitle => {
 
 let mainContentKeys = contentKeyHelper("main-content");
 let navKeys = contentKeyHelper("nav");
+let contactKeys = contentKeyHelper("contact");
 
 /*
 *
@@ -123,3 +124,16 @@ const organizerResult = contentOrganizer("main-content");
 const navbarResult = contentOrganizer("nav");
 console.log(navbarResult);
 
+const contactHelper = keys => {
+  const card = document.getElementsByClassName("contact");
+  const contact = [...card[0].children];
+  console.log(siteContent["contact"])
+  contact[0].innerHTML = siteContent["contact"]["contact-h4"];
+  for(let i = 1; i < keys.length; i++) {
+    contact[i].innerHTML = siteContent["contact"][keys[i]];
+  }
+
+  return;
+}
+
+contactHelper(contactKeys);

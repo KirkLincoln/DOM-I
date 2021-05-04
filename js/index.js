@@ -48,7 +48,7 @@ let cta = document.getElementsByClassName("cta")
 let title = cta[0].childNodes[1]
                   .firstChild
                   .nextSibling
-                  .innerHTML = `DOM<br/>IS<br/>FUN`;
+                  .innerHTML = `DOM<br/>IS<br/>AWESOME`;
                   console.log(title);
 let titleButton = cta[0].childNodes[1]
                         .firstChild
@@ -84,18 +84,15 @@ const contentOrganizer = section => {
   let i = 0;
   let j = 0;
 
+  if(section === "nav") return menuHandler();
   while(i < article.length) {
-    console.log(keys[j][keys[j].length - 1]);
     if(keys[j][keys[j].length - 1] === "h4") {
       article[i].firstElementChild.innerHTML = siteContent[section][`${keys[j][0]}-h4`];
       article[i].lastElementChild.innerHTML = siteContent[section][`${keys[j][0]}-content`];
-      console.log(article[i])
       i++;
     } else if(keys[j][1] === "img") {
       document.getElementById(`${keys[j][0]}-${keys[j][1]}`)
               .setAttribute("src", siteContent[section][keyJoiner(keys[j])])
-    } else if(section === "nav") {
-      menuHandler();
     }
     j++;
   }
@@ -104,9 +101,19 @@ const contentOrganizer = section => {
 }
 
 const menuHandler = () => {
-  const navbar = document.getElementsByTagName("nav").childNodes
-  console.log(navbar)
+  const menu = document.getElementsByTagName("nav");
+  const navbar = [...menu[0].children];
+  const length = navbar.length;
+
+  for(let i = 0; i < length; i++) {
+    navbar[i].innerHTML = siteContent["nav"][`nav-item-${i+1}`];
+    console.log(`nav-item-${i+1}`)
+  }
+
+  return;
 }
 
 const organizerResult = contentOrganizer("main-content");
-console.log(organizerResult);
+const navbarResult = contentOrganizer("nav");
+console.log(navbarResult);
+

@@ -40,3 +40,100 @@ const siteContent = {
 // Example: Update the img src for the logo
 let logo = document.getElementById("logo-img");
 logo.setAttribute('src', siteContent["nav"]["img-src"])
+
+let snippet = document.getElementById("cta-img");
+snippet.setAttribute('src', siteContent["cta"]["img-src"])
+
+let cta = document.getElementsByClassName("cta")
+let title = cta[0].childNodes[1]
+                  .firstChild
+                  .nextSibling
+                  .innerHTML = `DOM<br/>IS<br/>AWESOME`;
+                  console.log(title);
+let titleButton = cta[0].childNodes[1]
+                        .firstChild
+                        .nextSibling
+                        .nextSibling
+                        .nextSibling
+                        .innerHTML = "Get Started";
+
+
+
+
+
+const keyJoiner = val => val.join('-');
+// contentKeyHelper sorts the object keys within the section and uses .split('-') for data munging.
+const contentKeyHelper = sectionTitle => {
+  const section = Object.keys(siteContent[sectionTitle]);
+  const sectionKeys = section.forEach(node => Object(node).split('-'))
+  let ledger = [];
+  const result = section.forEach(key => {
+    ledger.push(key.split('-'));
+  })
+
+  return ledger;
+}
+
+let mainContentKeys = contentKeyHelper("main-content");
+let navKeys = contentKeyHelper("nav");
+let contactKeys = contentKeyHelper("contact");
+
+/*
+*
+* contentOrganizer is the meat of the website, where each section
+* is added dynamically but it is still too rigid.
+*
+*/
+const contentOrganizer = section => {
+  const keys = contentKeyHelper(section);
+  let textContent = document.getElementsByClassName("text-content");
+  let article = [...textContent];
+  let i = 0;
+  let j = 0;
+
+  if(section === "nav") return menuHandler();
+  while(i < article.length) {
+    if(keys[j][keys[j].length - 1] === "h4") {
+      article[i].firstElementChild.innerHTML = siteContent[section][`${keys[j][0]}-h4`];
+      article[i].lastElementChild.innerHTML = siteContent[section][`${keys[j][0]}-content`];
+      i++;
+    } else if(keys[j][1] === "img") {
+      document.getElementById(`${keys[j][0]}-${keys[j][1]}`)
+              .setAttribute("src", siteContent[section][keyJoiner(keys[j])])
+    }
+    j++;
+  }
+
+  return;
+}
+
+const menuHandler = () => {
+  const menu = document.getElementsByTagName("nav");
+  const navbar = [...menu[0].children];
+  const length = navbar.length;
+
+  for(let i = 0; i < length; i++) {
+    navbar[i].innerHTML = siteContent["nav"][`nav-item-${i+1}`];
+    console.log(`nav-item-${i+1}`)
+  }
+
+  return;
+}
+
+const organizerResult = contentOrganizer("main-content");
+const navbarResult = contentOrganizer("nav");
+console.log(navbarResult);
+
+const contactHelper = keys => {
+  const card = document.getElementsByClassName("contact");
+  const contact = [...card[0].children];
+  console.log(siteContent["contact"])
+  contact[0].innerHTML = siteContent["contact"]["contact-h4"];
+  for(let i = 1; i < keys.length; i++) {
+    contact[i].innerHTML = siteContent["contact"][keys[i]];
+  }
+
+  return;
+}
+
+contactHelper(contactKeys);

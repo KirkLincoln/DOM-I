@@ -61,9 +61,8 @@ let titleButton = cta[0].childNodes[1]
 
 
 
-
-
 const keyJoiner = val => val.join('-');
+// contentKeyHelper sorts the object keys within the section and uses .split('-') for data munging.
 const contentKeyHelper = sectionTitle => {
   const section = Object.keys(siteContent[sectionTitle]);
   const sectionKeys = section.forEach(node => Object(node).split('-'))
@@ -74,9 +73,16 @@ const contentKeyHelper = sectionTitle => {
 
   return ledger;
 }
+
 let mainContentKeys = contentKeyHelper("main-content");
 let navKeys = contentKeyHelper("nav");
 
+/*
+*
+* contentOrganizer is the meat of the website, where each section
+* is added dynamically but it is still too rigid.
+*
+*/
 const contentOrganizer = section => {
   const keys = contentKeyHelper(section);
   let textContent = document.getElementsByClassName("text-content");

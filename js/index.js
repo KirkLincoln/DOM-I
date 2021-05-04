@@ -44,13 +44,6 @@ logo.setAttribute('src', siteContent["nav"]["img-src"])
 let snippet = document.getElementById("cta-img");
 snippet.setAttribute('src', siteContent["cta"]["img-src"])
 
-let menu = document.getElementsByTagName("nav");
-console.log(menu.childNodes);
-for(let i = 0; i < 6; i++) {
-  console.log(siteContent["nav"][`nav-item-${i+1}`])
-  //menu.children[i].innerHTML = siteContent["nav"][`nav-item-${i+1}`];
-}
-
 let cta = document.getElementsByClassName("cta")
 let title = cta[0].childNodes[1]
                   .firstChild
@@ -63,54 +56,57 @@ let titleButton = cta[0].childNodes[1]
                         .nextSibling
                         .nextSibling
                         .innerHTML = "Get Started";
-console.log(titleButton);
-
-let topContent = document.getElementsByClassName("top-content")[0].childNodes;
-console.log(topContent);
-
-let bottomContent = document.getElementsByClassName("bottom-content")[0].childNodes;
-console.log(bottomContent);
-
-const getContent = content => {
-  console.log(content);
-  let contentSlice = [...content];
-  return contentSlice.filter(node => node.className === "text-content");
-}
-
-let resultTop    = getContent(topContent);
-let resultBottom = getContent(bottomContent);
 
 
-console.log(resultTop);
 
-const contentKeys = Object.keys(siteContent["main-content"]);
-console.log(contentKeys);
 
+
+
+
+const keyJoiner = val => val.join('-');
 const contentKeyHelper = sectionTitle => {
   const section = Object.keys(siteContent[sectionTitle]);
   const sectionKeys = section.forEach(node => Object(node).split('-'))
-  console.log(section);
   let ledger = [];
   const result = section.forEach(key => {
     ledger.push(key.split('-'));
   })
 
-
   return ledger;
 }
-
-const keyJoiner = val => val.join('-');
-
 let mainContentKeys = contentKeyHelper("main-content");
-console.log(mainContentKeys);
+let navKeys = contentKeyHelper("nav");
 
-const contentOrganizer = (content, section) => {
+const contentOrganizer = section => {
   const keys = contentKeyHelper(section);
   let textContent = document.getElementsByClassName("text-content");
-  console.log(textContent);
+  let article = [...textContent];
+  let i = 0;
+  let j = 0;
 
-  
+  while(i < article.length) {
+    console.log(keys[j][keys[j].length - 1]);
+    if(keys[j][keys[j].length - 1] === "h4") {
+      article[i].firstElementChild.innerHTML = siteContent[section][`${keys[j][0]}-h4`];
+      article[i].lastElementChild.innerHTML = siteContent[section][`${keys[j][0]}-content`];
+      console.log(article[i])
+      i++;
+    } else if(keys[j][1] === "img") {
+      document.getElementById(`${keys[j][0]}-${keys[j][1]}`)
+              .setAttribute("src", siteContent[section][keyJoiner(keys[j])])
+    } else if(section === "nav") {
+      menuHandler();
+    }
+    j++;
+  }
 
-
+  return;
 }
 
+const menuHandler = () => {
+  const navbar = document.getElementsByTagName("nav").childNodes
+  console.log(navbar)
+}
+
+const organizerResult = contentOrganizer("main-content");
+console.log(organizerResult);
